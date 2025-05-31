@@ -12,7 +12,8 @@ import os
 from trident import load_wsi
 from trident.segmentation_models import segmentation_model_factory
 from trident.patch_encoder_models import encoder_factory
-
+from trident.patch_encoder_models.loader_attr import attr_encoder_factory, reshape_hdf5
+from omnialigner.utils.sd_zarr import load_spatial_adata_from_h5
 
 def parse_arguments():
     """
@@ -43,6 +44,8 @@ def parse_arguments():
                         help='Absolute overlap for patching in pixels. Defaults to 0. ')
     parser.add_argument('--batch_size', type=int, default=32, 
                         help='Batch size for feature extraction. Defaults to 32.')
+    parser.add_argument('--attention', action='store_true',
+                    help='Enable attention. h5 (N x C) -> (N h w C ).')
     return parser.parse_args()
 
 
@@ -101,6 +104,26 @@ def process_slide(args):
         batch_limit=args.batch_size
     )
     print(f"Feature extraction completed. Results saved to {features_path}")
+    adata = load_spatial_adata_from_h5(f"{features_path}/{slide.name}.h5")
+    adata.write_h5ad(f"{features_path}/{slide.name}.h5ad")
+
+    if args.attention:
+        encoder = attr_encoder_factory(args.patch_encoder)
+        encoder.eval()
+        encoder.to(f"cuda:{args.gpu}")
+        features_path = features_dir = os.path.join(save_coords, "attention_features_{}".format(args.patch_encoder))
+        print(f"Feature extraction for attention. Results saved to {features_path}")
+        slide.extract_patch_features(
+            patch_encoder=encoder,
+            coords_path=os.path.join(save_coords, 'patches', f'{slide.name}_patches.h5'),
+            save_features=features_dir,
+            device=f"cuda:{args.gpu}",
+            batch_limit=args.batch_size
+        )
+        print(f"Feature extraction completed. Results saved to {features_path}")
+        reshape_hdf5(f"{features_dir}/{slide.name}.h5", f"{features_path}/{slide.name}_flatten.h5", "features", "coords", "features", "coords")
+        adata = load_spatial_adata_from_h5(f"{features_path}/{slide.name}_flatten.h5")
+        adata.write_h5ad(f"{features_path}/{slide.name}_flatten.h5ad")
 
 
 def main():

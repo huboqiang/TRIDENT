@@ -7,7 +7,7 @@ from trident.wsi_objects.ImageWSI import ImageWSI
 from trident.wsi_objects.CuCIMWSI import CuCIMWSI
 
 WSIReaderType = Literal['openslide', 'image', 'cucim']
-OPENSLIDE_EXTENSIONS = {'.svs', '.tif', '.tiff', '.ndpi', '.vms', '.vmu', '.scn', '.mrxs'}
+OPENSLIDE_EXTENSIONS = {'.svs', '.tif', '.tiff', '.ndpi', '.vms', '.vmu', '.scn', '.mrxs', '.qptiff'}
 CUCIM_EXTENSIONS = {'.svs', '.tif', '.tiff'}
 
 def load_wsi(

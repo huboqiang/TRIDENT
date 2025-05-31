@@ -647,7 +647,7 @@ class WSI:
         # dataloader = DataLoader(dataset, batch_size=batch_limit, num_workers=0, pin_memory=True)
 
         features = []
-        for imgs, _ in dataloader:
+        for imgs, _ in tqdm(dataloader):
             imgs = imgs.to(device)
             with torch.autocast(device_type='cuda', dtype=precision, enabled=(precision != torch.float32)):
                 batch_features = patch_encoder(imgs)  

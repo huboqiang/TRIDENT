@@ -1,5 +1,5 @@
 {
-    "hest": "",
-    "grandqc": "",
+    "hest": "/cluster/home/bqhu_jh/.cache/huggingface/hub/models--MahmoodLab--hest-tissue-seg/blobs/4ddf8be82384544ae9ef9af7ad0cc1e8190c781b945eea9826c778f93d08fd5a",
+    "grandqc": "/cluster/home/bqhu_jh/.cache/huggingface/hub/models--MahmoodLab--hest-tissue-seg/blobs/cda7506dbb2e21be1410077d4f55632e7073fe068cf318df8fbc185a66806ecf",
     "grandqc_artifact": ""
 }

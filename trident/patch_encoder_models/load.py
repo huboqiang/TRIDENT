@@ -800,7 +800,7 @@ class GigaPathInferenceEncoder(BasePatchEncoder):
         self, 
     ):
         import timm
-        assert timm.__version__ == '0.9.16', f"Gigapath requires timm version 0.9.16, but found {timm.__version__}. Please install the correct version using `pip install timm==0.9.16`"
+        # assert timm.__version__ == '0.9.16', f"Gigapath requires timm version 0.9.16, but found {timm.__version__}. Please install the correct version using `pip install timm==0.9.16`"
         from torchvision import transforms
 
         self.enc_name = 'gigapath'
@@ -1007,7 +1007,7 @@ class HOptimus0InferenceEncoder(BasePatchEncoder):
         timm_kwargs={'init_values': 1e-5, 'dynamic_img_size': False}
     ):
         import timm
-        assert timm.__version__ == '0.9.16', f"H-Optimus requires timm version 0.9.16, but found {timm.__version__}. Please install the correct version using `pip install timm==0.9.16`"
+        # assert timm.__version__ == '0.9.16', f"H-Optimus requires timm version 0.9.16, but found {timm.__version__}. Please install the correct version using `pip install timm==0.9.16`"
         from torchvision import transforms
 
         self.enc_name = 'hoptimus0'
@@ -1169,10 +1169,14 @@ class Conchv15InferenceEncoder(BasePatchEncoder):
 
     def _build(self, img_size=448):
         from trident.patch_encoder_models.model_zoo.conchv1_5.conchv1_5 import create_model_from_pretrained
-
+        from transformers import AutoModel
+        
         self.enc_name = 'conch_v15'
         weights_path = self._get_weights_path()
+        titan = AutoModel.from_pretrained('MahmoodLab/TITAN', trust_remote_code=True)
+        conch, eval_transform = titan.return_conch()
 
+        return conch, eval_transform, torch.float16
         if weights_path:
             try:
                 model, eval_transform = create_model_from_pretrained(checkpoint_path=weights_path, img_size=img_size)
