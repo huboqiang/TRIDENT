@@ -156,8 +156,8 @@ def expand_features_coords(features: np.ndarray, coords: np.ndarray):
     offsets_row = np.repeat(np.linspace(0, tile_size, H), W)
     offsets_col = np.tile(np.linspace(0, tile_size, W), H)
 
-    expanded_rows = np.repeat(coords[:, 0], H * W) + np.tile(offsets_row, N)
-    expanded_cols = np.repeat(coords[:, 1], H * W) + np.tile(offsets_col, N)
+    expanded_rows = np.repeat(coords[:, 0], H * W) + np.tile(offsets_col, N)
+    expanded_cols = np.repeat(coords[:, 1], H * W) + np.tile(offsets_row, N)
     expanded_coords = np.stack([expanded_rows, expanded_cols], axis=1)
 
     return expanded_features, expanded_coords
