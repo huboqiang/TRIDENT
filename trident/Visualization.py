@@ -101,7 +101,7 @@ def visualize_heatmap(
     
     overlay = create_overlay(scores, coords, patch_size_level0, scale, region_size)
     
-    img = wsi.read_region_pil((0, 0), vis_level, wsi.level_dimensions[vis_level]).convert("RGB")
+    img = wsi.read_region((0, 0), vis_level, wsi.level_dimensions[vis_level]).convert("RGB")
     img = img.resize(region_size, resample=Image.Resampling.BICUBIC)
     img = np.array(img)
     
@@ -119,7 +119,7 @@ def visualize_heatmap(
         topk_indices = np.argsort(scores)[-num_top_patches_to_save:]
         for idx, i in enumerate(topk_indices):
             x, y = coords[i]
-            patch = wsi.read_region_pil((x, y), 0, (patch_size_level0, patch_size_level0))
+            patch = wsi.read_region((x, y), 0, (patch_size_level0, patch_size_level0))
             patch.save(os.path.join(topk_dir, f"top_{idx}_score_{scores[i]:.4f}.png"))
 
     return heatmap_path
