@@ -15,6 +15,8 @@ from trident.patch_encoder_models import encoder_factory
 from trident.patch_encoder_models.loader_attr import attr_encoder_factory, reshape_hdf5
 from omnialigner.utils.sd_zarr import load_spatial_adata_from_h5
 
+os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8" 
+
 def parse_arguments():
     """
     Parse command-line arguments for processing a single WSI.
