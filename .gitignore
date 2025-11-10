@@ -1,0 +1,8 @@
+*/__pycache__/
+trident/__pycache__/
+trident/patch_encoder_models/__pycache__/
+trident/patch_encoder_models/model_zoo/__pycache__/
+trident/patch_encoder_models/model_zoo/conchv1_5/__pycache__/
+trident/patch_encoder_models/utils/__pycache__/
+trident/segmentation_models/__pycache__/
+trident/wsi_objects/__pycache__/
